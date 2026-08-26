@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Executiva Integrada: CRM &amp; Social Listening — Continente · Julho 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --red:#E30613;            /* Vermelho institucional Continente */
+  --red-deep:#C8102E;       /* Vermelho profundo */
+  --red-soft:#fbe6e8;
+  --ink:#212529;            /* Texto escuro */
+  --ink-2:#495057;
+  --muted:#6b7280;
+  --line:#e9ecef;
+  --bg:#f4f5f7;             /* Fundo geral */
+  --bg-2:#F8F9FA;           /* Cinza claro premium */
+  --card:#ffffff;
+  --charcoal:#161a22;       /* Header sofisticado */
+  --charcoal-2:#232a36;
+  --pos:#16a34a;            /* Sentimento positivo */
+  --pos-soft:#dcfce7;
+  --neu:#f59e0b;            /* Neutro */
+  --neu-soft:#fef3c7;
+  --neg:#dc2626;            /* Negativo */
+  --neg-soft:#fee2e2;
+  --blue:#2563eb;
+  --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px -12px rgba(16,24,40,.18);
+  --shadow-lg:0 24px 60px -24px rgba(16,24,40,.35);
+  --radius:16px;
+  --radius-sm:11px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+  font-feature-settings:"cv05","ss01","tnum";
+}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+a{color:inherit}
+::selection{background:var(--red);color:#fff}
+
+/* ===================== HEADER ===================== */
+.top{
+  position:sticky;top:0;z-index:60;
+  background:linear-gradient(180deg,var(--charcoal),var(--charcoal-2));
+  color:#fff;box-shadow:0 6px 24px -12px rgba(0,0,0,.6);
+}
+.top-inner{max-width:1480px;margin:0 auto;padding:14px 26px}
+.brand-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{
+  display:flex;align-items:center;gap:11px;font-weight:900;font-size:20px;
+  letter-spacing:-.03em;background:var(--red);padding:9px 15px;border-radius:11px;
+  box-shadow:0 8px 20px -8px rgba(227,6,19,.7);white-space:nowrap;
+}
+.logo .dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+.cobrand{display:flex;flex-direction:column;line-height:1.15;font-size:11px;color:#aeb6c2}
+.cobrand b{color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.02em}
+.title-wrap{margin-left:auto;text-align:right;min-width:220px}
+.title-wrap h1{font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1.25}
+.title-wrap .sub{font-size:11.5px;color:#98a2b3;margin-top:2px;font-weight:500}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:#cbd5e1;margin-top:6px;
+  background:rgba(255,255,255,.07);padding:3px 9px;border-radius:20px;font-weight:600}
+.live .beat{width:7px;height:7px;border-radius:50%;background:var(--pos);animation:beat 1.8s infinite}
+@keyframes beat{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.6)}50%{box-shadow:0 0 0 5px rgba(22,163,74,0)}}
+
+/* ===================== FILTER BAR ===================== */
+.filters{
+  background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(4px);
+}
+.filters-inner{max-width:1480px;margin:0 auto;padding:11px 26px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.filters .flabel{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#8b95a5;font-weight:700;margin-right:2px}
+.fgroup{display:flex;flex-direction:column;gap:3px}
+.fgroup label{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:#7c8798;font-weight:700;padding-left:3px}
+.fselect{
+  appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23212529' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border:none;border-radius:9px;padding:8px 30px 8px 12px;font-size:13px;font-weight:600;color:var(--ink);
+  font-family:inherit;cursor:pointer;min-width:132px;box-shadow:0 1px 0 rgba(0,0,0,.2);transition:.15s;
+}
+.fselect:hover{transform:translateY(-1px)}
+.fselect:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.btn-reset{
+  margin-left:auto;background:var(--red);color:#fff;border:none;border-radius:9px;padding:9px 16px;
+  font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;letter-spacing:.01em;
+}
+.btn-reset:hover{background:var(--red-deep);transform:translateY(-1px)}
+.btn-reset:focus-visible{outline:3px solid #fff;outline-offset:2px}
+
+/* toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--charcoal);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;
+  box-shadow:var(--shadow-lg);z-index:200;opacity:0;pointer-events:none;transition:.35s cubic-bezier(.2,.8,.2,1);
+  display:flex;align-items:center;gap:10px;max-width:90vw;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast .chip{background:var(--red);width:8px;height:8px;border-radius:50%}
+
+/* ===================== LAYOUT ===================== */
+main{max-width:1480px;margin:0 auto;padding:26px 26px 90px}
+.section{margin-top:40px;scroll-margin-top:130px}
+.sec-head{display:flex;align-items:flex-end;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.sec-eyebrow{
+  font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);
+  display:flex;align-items:center;gap:9px;
+}
+.sec-eyebrow .n{
+  background:var(--red);color:#fff;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  font-size:12px;font-weight:900;box-shadow:0 6px 14px -6px rgba(227,6,19,.6);
+}
+.sec-head h2{font-size:22px;font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.sec-head .desc{font-size:13px;color:var(--muted);margin-left:auto;max-width:440px;text-align:right;font-weight:500}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+.pad{padding:20px}
+.grid{display:grid;gap:16px}
+
+/* ===================== KPI CARDS ===================== */
+.kpi-grid{grid-template-columns:repeat(4,1fr)}
+.kpi{
+  position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);padding:18px 18px 16px;box-shadow:var(--shadow);transition:.22s cubic-bezier(.2,.8,.2,1);
+}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red);opacity:.9}
+.kpi:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#dfe3e8}
+.kpi .klabel{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:7px}
+.kpi .kicon{width:26px;height:26px;border-radius:8px;background:var(--red-soft);display:grid;place-items:center;flex:none}
+.kpi .kicon svg{width:15px;height:15px;stroke:var(--red)}
+.kpi .kval{font-size:31px;font-weight:900;letter-spacing:-.03em;margin-top:10px;line-height:1}
+.kpi .kval small{font-size:15px;font-weight:700;color:var(--ink-2)}
+.kpi .ksub{font-size:12px;color:var(--muted);margin-top:7px;font-weight:500}
+.kpi .ktrend{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:20px;margin-top:9px}
+.up{background:var(--pos-soft);color:#15803d}
+.down{background:var(--neg-soft);color:#b91c1c}
+.flat{background:var(--neu-soft);color:#b45309}
+
+/* dual SLA */
+.sla-dual{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:11px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.sla-dual > div{padding:11px 12px}
+.sla-dual > div:first-child{border-right:1px solid var(--line);background:linear-gradient(180deg,#fff, #fff5f5)}
+.sla-dual .tag{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.sla-dual .big{font-size:24px;font-weight:900;letter-spacing:-.02em;margin-top:3px}
+.sla-dual .abs{font-size:10.5px;color:var(--muted);margin-top:1px;font-weight:500}
+
+/* info tooltip */
+.info{position:relative;display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;
+  background:var(--ink-2);color:#fff;font-size:10px;font-weight:800;cursor:help;flex:none;margin-left:auto}
+.info .tip{position:absolute;bottom:130%;right:-6px;width:250px;background:var(--charcoal);color:#e5e7eb;
+  font-size:11.5px;font-weight:500;line-height:1.5;text-transform:none;letter-spacing:normal;padding:11px 13px;
+  border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(4px);transition:.18s;z-index:40}
+.info .tip b{color:#fff}
+.pending{background:#f1f5f9;border:1px dashed #cbd5e1;border-radius:12px;padding:16px 18px;color:#475569;font-size:12.5px;line-height:1.55;font-weight:500}.pending b{color:#334155}.pending-chart{min-height:220px;display:grid;place-items:center;text-align:center}
+.info .tip::after{content:"";position:absolute;top:100%;right:9px;border:7px solid transparent;border-top-color:var(--charcoal)}
+.info:hover .tip,.info:focus .tip,.info:focus-within .tip{opacity:1;visibility:visible;transform:translateY(0)}
+
+/* ===================== FUNNEL (SIGNATURE) ===================== */
+.funnel{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative}
+.fstep{
+  position:relative;background:var(--card);border:1px solid var(--line);padding:18px 16px 18px 26px;
+  transition:.25s;cursor:default;
+}
+.fstep:first-child{border-radius:var(--radius) 0 0 var(--radius)}
+.fstep:last-child{border-radius:0 var(--radius) var(--radius) 0}
+.fstep:not(:last-child)::after{
+  content:"";position:absolute;right:-13px;top:50%;transform:translateY(-50%) rotate(45deg);
+  width:26px;height:26px;background:var(--card);border-top:1px solid var(--line);border-right:1px solid var(--line);z-index:3;
+}
+.fstep:hover{background:#fff;box-shadow:var(--shadow-lg);z-index:5;transform:translateY(-3px)}
+.fstep .fnum{font-size:10px;font-weight:900;color:var(--red);letter-spacing:.1em}
+.fstep .ftitle{font-size:14.5px;font-weight:800;margin-top:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+.fstep .ftitle .ic{width:24px;height:24px;border-radius:7px;background:var(--red-soft);display:grid;place-items:center;flex:none}
+.fstep .ftitle .ic svg{width:14px;height:14px;stroke:var(--red)}
+.fstep p{font-size:11.5px;color:var(--ink-2);margin-top:9px;line-height:1.5}
+.fstep .fmetric{margin-top:11px;font-size:12px;font-weight:700;color:var(--red-deep)}
+.fstep .fmetric span{display:block;font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px}
+
+/* cross-intelligence */
+.xintel{
+  background:linear-gradient(135deg,var(--charcoal),#1d2530 60%,#2a1418);color:#fff;border:none;overflow:hidden;position:relative;
+}
+.xintel::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(227,6,19,.35),transparent 70%)}
+.xintel .pad{position:relative;z-index:2}
+.xintel .xhead{display:flex;align-items:center;gap:11px;margin-bottom:4px}
+.xintel .xhead .badge{background:var(--red);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:20px}
+.xintel h3{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.xintel .xgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.xcell{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px}
+.xcell .xk{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#f2b8bd;display:flex;align-items:center;gap:8px}
+.xcell .xk svg{width:16px;height:16px;stroke:#f2b8bd}
+.xcell p{font-size:12.5px;color:#dbe0e8;margin-top:9px;line-height:1.55}
+.xcell b{color:#fff}
+
+/* ===================== CHART CARDS ===================== */
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column}
+.chart-card h3{font-size:15px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:9px}
+.chart-card .hint{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
+.chart-wrap{position:relative;margin-top:14px;flex:1;min-height:220px}
+.pill-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pill-legend .pl{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--bg-2);padding:5px 10px;border-radius:20px;border:1px solid var(--line)}
+.pill-legend .sw{width:10px;height:10px;border-radius:3px}
+
+.anno{
+  margin-top:14px;background:var(--neu-soft);border:1px solid #fde68a;border-radius:11px;padding:11px 13px;
+  font-size:12px;color:#92400e;font-weight:600;display:flex;gap:9px;align-items:flex-start;line-height:1.5;
+}
+.anno svg{width:16px;height:16px;stroke:#b45309;flex:none;margin-top:1px}
+
+/* ===================== SOV COMPETITOR CARDS ===================== */
+.sov-layout{display:grid;grid-template-columns:1.05fr 1.2fr;gap:16px}
+.comp-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.comp{
+  border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--card);transition:.2s;cursor:default;position:relative;overflow:hidden;
+}
+.comp::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#999)}
+.comp:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#dfe3e8}
+.comp .cname{font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:space-between}
+.comp .cshare{font-size:20px;font-weight:900;letter-spacing:-.02em;margin-top:4px;color:var(--c,var(--ink))}
+.comp .cabs{font-size:11px;color:var(--muted);font-weight:600}
+.comp .cwhy{font-size:11.5px;color:var(--ink-2);margin-top:9px;line-height:1.5;border-top:1px dashed var(--line);padding-top:9px}
+.comp .cwhy .lab{font-weight:800;color:var(--red-deep);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.comp.hl{outline:2px solid var(--red);outline-offset:1px}
+
+/* peaks timeline */
+.timeline{position:relative;padding-left:6px}
+.tl-item{position:relative;padding:0 0 20px 30px;border-left:2px solid var(--line)}
+.tl-item:last-child{border-left-color:transparent;padding-bottom:0}
+.tl-item .dot{position:absolute;left:-9px;top:1px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid #4C6EF5;box-shadow:0 0 0 4px #e7ebff}
+.tl-item.neg .dot{border-color:var(--neg);box-shadow:0 0 0 4px var(--neg-soft)}
+.tl-item.pos .dot{border-color:var(--pos);box-shadow:0 0 0 4px var(--pos-soft)}
+.tl-item .tl-date{font-size:11px;font-weight:800;color:#4C6EF5;letter-spacing:.03em}
+.tl-item.neg .tl-date{color:var(--neg)}
+.tl-item.pos .tl-date{color:var(--pos)}
+.tl-item .tl-title{font-size:13.5px;font-weight:700;margin-top:2px}
+.tl-item .tl-body{font-size:12px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+.tl-item .tl-metric{font-size:11px;font-weight:700;margin-top:6px;display:inline-block;background:var(--bg-2);padding:3px 9px;border-radius:20px;border:1px solid var(--line)}
+.tl-head{display:flex;align-items:center;gap:8px}
+.scope-legend{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.sc{font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid transparent;white-space:nowrap}
+.sc-brand{background:#e7ebff;color:#3b3fa1;border-color:#c7cffb}
+.sc-cat{background:#e0edff;color:#1e40af;border-color:#c3d9ff}
+.sc-comp{background:#ede9fe;color:#6d28d9;border-color:#ddd0fb}
+
+/* ===================== OWNED vs EARNED ===================== */
+.oe-grid{grid-template-columns:1fr 1fr}
+.oe-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.oe-card .oe-head{padding:16px 18px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.oe-card.owned .oe-head{background:linear-gradient(120deg,var(--red-deep),var(--red))}
+.oe-card.earned .oe-head{background:linear-gradient(120deg,#1f2937,#374151)}
+.oe-head .oe-t{font-size:15px;font-weight:800}
+.oe-head .oe-t small{display:block;font-size:11px;font-weight:600;opacity:.85;margin-top:1px}
+.oe-head .oe-v{font-size:24px;font-weight:900;letter-spacing:-.02em;text-align:right}
+.oe-head .oe-v small{display:block;font-size:11px;font-weight:600;opacity:.85}
+.oe-body{padding:16px 18px}
+.oe-stat{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.oe-stat:last-child{border-bottom:none}
+.oe-stat b{font-weight:800}
+
+/* ===================== VERBATIMS ===================== */
+.verb-grid{grid-template-columns:repeat(3,1fr)}
+.verbatim{
+  border:1px solid var(--line);border-radius:var(--radius-sm);padding:15px;background:var(--card);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;transition:.2s;cursor:pointer;
+}
+.verbatim:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#dfe3e8}
+.verbatim.hidden{display:none}
+.vb-top{display:flex;align-items:center;gap:9px}
+.vb-net{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;flex:none}
+.vb-net svg{width:16px;height:16px;fill:#fff}
+.vb-brand{font-size:13px;font-weight:800;line-height:1.1}
+.vb-brand small{display:block;font-size:10.5px;color:var(--muted);font-weight:600;margin-top:1px}
+.vb-sent{margin-left:auto;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 9px;border-radius:20px}
+.s-pos{background:var(--pos-soft);color:#15803d}
+.s-neu{background:var(--neu-soft);color:#b45309}
+.s-neg{background:var(--neg-soft);color:#b91c1c}
+.vb-text{font-size:12.5px;color:var(--ink);margin-top:12px;line-height:1.55;flex:1}
+.vb-text::before{content:"“";color:var(--red);font-size:24px;font-weight:900;line-height:0;vertical-align:-6px;margin-right:2px}
+.vb-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.vb-tag{font-size:10px;font-weight:700;background:var(--bg-2);border:1px solid var(--line);color:var(--ink-2);padding:3px 8px;border-radius:6px}
+.vb-tag.origin{background:var(--red-soft);border-color:#f6c9cd;color:var(--red-deep)}
+.vb-foot{display:flex;align-items:center;justify-content:space-between;margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
+.vb-foot .date{font-size:11px;color:var(--muted);font-weight:600}
+.vb-link{font-size:11.5px;font-weight:700;color:var(--red);display:inline-flex;align-items:center;gap:5px;text-decoration:none}
+.vb-link svg{width:13px;height:13px;stroke:var(--red)}
+.vb-link:hover{text-decoration:underline}
+
+/* ===================== TOP POSTS ===================== */
+.post-grid{grid-template-columns:repeat(3,1fr)}
+.post{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow);transition:.22s;display:flex;flex-direction:column}
+.post:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.post-thumb{height:158px;position:relative;display:grid;place-items:center;overflow:hidden}
+.post-thumb .emoji{font-size:56px;filter:drop-shadow(0 8px 16px rgba(0,0,0,.25))}
+.post-net{position:absolute;top:11px;left:11px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
+.post-net svg{width:16px;height:16px;fill:#fff}
+.post-date{position:absolute;top:13px;right:12px;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;backdrop-filter:blur(4px)}
+.post-body{padding:14px;display:flex;flex-direction:column;flex:1}
+.post-body h4{font-size:13.5px;font-weight:800;line-height:1.35}
+.post-body p{font-size:12px;color:var(--ink-2);margin-top:6px;line-height:1.5;flex:1}
+.post-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.pm{background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:8px 6px;text-align:center}
+.pm .pmv{font-size:14px;font-weight:900;letter-spacing:-.02em}
+.pm .pml{font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:1px}
+.post .see{display:block;text-align:center;margin-top:12px;background:var(--red);color:#fff;font-size:12.5px;font-weight:700;padding:9px;border-radius:9px;text-decoration:none;transition:.15s}
+.post .see:hover{background:var(--red-deep)}
+
+/* ===================== MODAL ===================== */
+.modal-bg{position:fixed;inset:0;background:rgba(15,20,28,.6);backdrop-filter:blur(3px);z-index:150;display:none;place-items:center;padding:20px;opacity:0;transition:.25s}
+.modal-bg.open{display:grid;opacity:1}
+.modal{background:#fff;border-radius:18px;max-width:520px;width:100%;box-shadow:var(--shadow-lg);transform:translateY(16px) scale(.98);transition:.3s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+.modal-bg.open .modal{transform:none}
+.modal-head{padding:18px 20px;color:#fff;display:flex;align-items:center;gap:12px}
+.modal-head .mnet{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.2);display:grid;place-items:center}
+.modal-head .mnet svg{width:20px;height:20px;fill:#fff}
+.modal-head .mt{font-size:16px;font-weight:800}
+.modal-head .mt small{display:block;font-size:11.5px;opacity:.85;font-weight:600;margin-top:1px}
+.modal-head .mclose{margin-left:auto;background:rgba(255,255,255,.18);border:none;color:#fff;width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:18px;font-weight:700;line-height:1}
+.modal-body{padding:20px}
+.modal-quote{font-size:15px;line-height:1.6;color:var(--ink);font-weight:500;border-left:3px solid var(--red);padding-left:14px}
+.modal-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.mm{background:var(--bg-2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.mm .l{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
+.mm .v{font-size:13.5px;font-weight:700;margin-top:3px}
+.modal-cta{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;background:var(--red);color:#fff;text-decoration:none;padding:12px;border-radius:11px;font-weight:700;font-size:13.5px;transition:.15s}
+.modal-cta:hover{background:var(--red-deep)}
+.modal-cta svg{width:16px;height:16px;stroke:#fff}
+
+/* footer */
+.foot{max-width:1480px;margin:40px auto 0;padding:24px 26px;border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.foot .fb{background:var(--red);color:#fff;font-weight:800;padding:6px 11px;border-radius:8px;font-size:12px}
+.foot .stack{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.foot .stack span{background:var(--bg-2);border:1px solid var(--line);padding:5px 10px;border-radius:20px;font-weight:600;font-size:11px}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:1180px){
+  .funnel{grid-template-columns:repeat(3,1fr)}
+  .fstep:nth-child(3n)::after{display:none}
+  .fstep{border-radius:0!important}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .sov-layout{grid-template-columns:1fr}
+  .verb-grid,.post-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:820px){
+  .two-col{grid-template-columns:1fr!important}
+  .oe-grid{grid-template-columns:1fr}
+  .xintel .xgrid{grid-template-columns:1fr}
+  .title-wrap{margin-left:0;text-align:left;width:100%}
+}
+@media(max-width:640px){
+  main{padding:18px 15px 70px}
+  .top-inner,.filters-inner{padding-left:15px;padding-right:15px}
+  .funnel{grid-template-columns:1fr}
+  .fstep::after{display:none}
+  .kpi-grid,.verb-grid,.post-grid,.comp-cards{grid-template-columns:1fr}
+  .sec-head .desc{text-align:left;margin-left:0}
+  .kpi .kval{font-size:27px}
+  .fselect{min-width:0;flex:1}
+  .fgroup{flex:1 1 46%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== LOCK SCREEN ===== */
+#lockScreen{position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,var(--charcoal),#2a1418);display:grid;place-items:center;padding:24px}
+.lock-card{background:#fff;border-radius:20px;box-shadow:var(--shadow-lg);width:100%;max-width:380px;padding:34px 30px;text-align:center}
+.lock-card .lk-logo{display:inline-flex;align-items:center;gap:9px;font-weight:900;font-size:19px;letter-spacing:-.03em;background:var(--red);color:#fff;padding:9px 15px;border-radius:11px;margin-bottom:20px}
+.lock-card .lk-logo .dot{width:8px;height:8px;border-radius:50%;background:#fff}
+.lock-card h2{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.lock-card p{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+.lock-card .pw-row{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+#pwInput{border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;font-size:14px;font-family:inherit;font-weight:600;text-align:center;letter-spacing:.02em}
+#pwInput:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+#pwBtn{background:var(--red);color:#fff;border:none;border-radius:11px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+#pwBtn:hover{background:var(--red-deep)}
+#pwErr{display:none;color:var(--neg);font-size:12px;font-weight:700;margin-top:4px}
+.lock-card .lk-foot{margin-top:18px;font-size:10.5px;color:#adb5bd;font-weight:600}
+</style>
+</head>
+<body>
+<div id="lockScreen">
+  <div class="lock-card">
+    <div class="lk-logo"><span class="dot"></span>Continente</div>
+    <h2>Relatório protegido</h2>
+    <p>Dashboard Executiva Integrada — CRM &amp; Social Listening · Julho 2026. Introduza a palavra-passe para aceder.</p>
+    <div class="pw-row">
+      <input id="pwInput" type="password" placeholder="Palavra-passe" autocomplete="off" aria-label="Palavra-passe">
+      <button id="pwBtn">Aceder ao relatório</button>
+      <span id="pwErr">Palavra-passe incorreta. Tente novamente.</span>
+    </div>
+    <div class="lk-foot">Elife Portugal · via Buzzmonitor</div>
+  </div>
+</div>
+
+<!-- ==================== HEADER ==================== -->
+<header class="top">
+  <div class="top-inner">
+    <div class="brand-row">
+      <div class="logo"><span class="dot"></span>Continente</div>
+      <div class="cobrand">
+        Relatório operado por<br><b>Elife Portugal</b> · via Buzzmonitor
+      </div>
+      <div class="title-wrap">
+        <h1>Dashboard Executiva Integrada: CRM &amp; Social Listening</h1>
+        <div class="sub">Relatório consolidado — Julho de 2026 · Mercado de retalho alimentar (Portugal)</div>
+        <span class="live"><span class="beat"></span>Dados consolidados · atualizado 26 Ago 2026, 14h10 (PT)</span>
+      </div>
+    </div>
+  </div>
+  <!-- FILTER BAR -->
+  <div class="filters">
+    <div class="filters-inner">
+      <span class="flabel">Filtros</span>
+      <div class="fgroup">
+        <label for="fPeriod">Período</label>
+        <select class="fselect" id="fPeriod" title="Restante do ano a preencher ao longo do período">
+          <option>Julho 2026</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label for="fChannel">Canal</label>
+        <select class="fselect" id="fChannel">
+          <option value="todos">Todos os canais</option>
+          <option value="X/Twitter">X/Twitter</option>
+          <option value="Facebook">Facebook</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Instagram">Instagram</option>
+          <option value="TikTok">TikTok</option>
+          <option value="Fóruns">Fóruns</option>
+          <option value="Social News">Social News</option>
+          <option value="Blogs">Blogs</option>
+          <option value="App Store">App Store</option>
+          <option value="Google Play Store">Google Play Store</option>
+          <option value="Reddit">Reddit</option>
+          <option value="Miscelâneos">Miscelâneos</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label for="fNature">Natureza de Tag</label>
+        <select class="fselect" id="fNature">
+          <option value="todos">Todas as naturezas</option>
+          <option value="Crítica">Crítica</option>
+          <option value="Desejo">Desejo</option>
+          <option value="Dúvida">Dúvida</option>
+          <option value="Elogio">Elogio</option>
+          <option value="Engagement">Engagement</option>
+          <option value="Informação">Informação</option>
+          <option value="Opinião">Opinião</option>
+          <option value="Outros">Outros</option>
+          <option value="Reclamação">Reclamação</option>
+          <option value="Relato de Compra">Relato de Compra</option>
+          <option value="Stock">Stock</option>
+          <option value="Sugestão">Sugestão</option>
+          <option value="Notícias">Notícias</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label for="fComp">Concorrente</label>
+        <select class="fselect" id="fComp">
+          <option value="todos">Todos</option>
+          <option value="Continente">Continente</option>
+          <option value="Mercadona">Mercadona</option>
+          <option value="Lidl">Lidl</option>
+          <option value="Pingo Doce">Pingo Doce</option>
+          <option value="Auchan">Auchan</option>
+        </select>
+      </div>
+      <button class="btn-reset" id="btnReset">Repor filtros</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ==================== SEÇÃO 1 — RESUMO EXECUTIVO ==================== -->
+  <section class="section" id="s1">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow"><span class="n">1</span>Resumo Executivo</div>
+        <h2 style="margin-top:9px">Visão em funil: do mercado à oportunidade</h2>
+      </div>
+      <p class="desc">Leitura encadeada que conecta o cenário macro do retalho à operação de CRM do Continente e às oportunidades acionáveis de Julho/2026.</p>
+    </div>
+
+    <!-- FUNNEL SIGNATURE -->
+    <div class="funnel">
+      <div class="fstep">
+        <div class="fnum">01 · MACRO</div>
+        <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span>Mercado</div>
+        <p>Retalho alimentar em Portugal com <b>19.473 menções</b> no conjunto comparável das 5 insígnias (Julho, earned). Conversa de verão dominada por grelhados, frescos e promoções.</p>
+        <div class="fmetric">19.473 menções<span>categoria comparável (Portugal)</span></div>
+      </div>
+      <div class="fstep">
+        <div class="fnum">02 · BRAND</div>
+        <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6-6.3 4.6L7.9 13.8 2 9.4h7.6z"/></svg></span>Marca</div>
+        <p>Continente <b>lidera o Share of Voice (35%, 6.800)</b> no conjunto comparável, à frente do <b>Pingo Doce (27%)</b>. O motor de conversa espontânea é o <b>Festival da Comida Continente</b>.</p>
+        <div class="fmetric">SoV 35%<span>6.800 menções — 1.º lugar</span></div>
+      </div>
+      <div class="fstep">
+        <div class="fnum">03 · PERCEPÇÃO</div>
+        <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.4 8.4 0 0 1-11.9 7.6L3 21l1.9-6.1A8.5 8.5 0 1 1 21 11.5z"/></svg></span>Consumidor</div>
+        <p>No atendimento (Owned) <b>80% das interações são positivas</b>. No listening, o Continente tem <b>59% de menções positivas</b> (earned) e um perfil de sentimento próximo dos concorrentes.</p>
+        <div class="fmetric">80,2% positivo (CRM)<span>1.836 de 2.289 atendimentos</span></div>
+      </div>
+      <div class="fstep">
+        <div class="fnum">04 · OPERAÇÃO</div>
+        <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10M12 6v6l4 2"/></svg></span>CRM</div>
+        <p><b>65,67% dentro do SLA de 1h</b> e 1.ª resposta média de <b>52min07s</b> (antes: 1h11min41s). <b>98,1% resolvido em N1</b>; transbordo N2 residual (0,8%).</p>
+        <div class="fmetric">SLA 1h: 65,67%<span>2.289 interações · 1.ª resp. 52min07s</span></div>
+      </div>
+      <div class="fstep">
+        <div class="fnum">05 · INSIGHTS</div>
+        <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 4 12.7c-.6.5-1 1.3-1 2.3H9c0-1-.4-1.8-1-2.3A7 7 0 0 1 12 2z"/></svg></span>Insights</div>
+        <p>O <b>Festival da Comida Continente</b> lidera o engagement nos canais próprios (TikTok/IG) e gera UGC espontâneo (brindes do festival). Grelhados/frescos dominam a conversa do setor.</p>
+        <div class="fmetric">Festival da Comida<span>driver de Owned + Earned</span></div>
+      </div>
+      <div class="fstep">
+        <div class="fnum">06 · AÇÃO</div>
+        <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Oportunidades</div>
+        <p>Capitalizar o momentum do <b>Festival da Comida Continente</b> para consolidar a liderança de SoV; converter o forte desempenho de TikTok em alcance sustentado ao longo do ano.</p>
+        <div class="fmetric">Consolidar liderança<span>manter distância p/ Pingo Doce</span></div>
+      </div>
+    </div>
+
+    <!-- CROSS-INTELLIGENCE -->
+    <div class="card xintel" style="margin-top:16px">
+      <div class="pad">
+        <div class="xhead">
+          <span class="badge">Cross-Intelligence</span>
+          <h3>Onde o Listening e o CRM se encontraram em Julho</h3>
+        </div>
+        <div class="xgrid">
+          <div class="xcell">
+            <div class="xk"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Owned & Earned em torno do Festival</div>
+            <p>O <b>Festival da Comida Continente</b> aparece dos dois lados: gera os <b>posts de maior engagement</b> nos canais próprios (Owned) e <b>UGC espontâneo</b> no listening (ex.: publicações sobre os brindes do festival). Owned e Earned reforçam-se em torno do mesmo evento.</p>
+          </div>
+          <div class="xcell">
+            <div class="xk"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2l9 4v6c0 5-3.8 8.5-9 10-5.2-1.5-9-5-9-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Operação de CRM eficiente</div>
+            <p>A operação de CRM manteve <b>1.ª resposta a 52min07s</b> e <b>transbordo N2 residual (0,8%)</b>: 98,1% resolvido em N1, sem escalar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SEÇÃO 2 — OPERAÇÃO DE CRM ==================== -->
+  <section class="section" id="s2">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow"><span class="n">2</span>Operação de CRM &amp; Atendimento</div>
+        <h2 style="margin-top:9px">Owned &amp; Private — canais administrados via Buzzmonitor</h2>
+      </div>
+      <p class="desc">Instagram, Facebook (inbox e comentários), TikTok, YouTube e Apps. SLA de primeira resposta ≤ 4h · Resolução N1 vs. transbordo N2.</p>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="grid kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kpi">
+        <div class="klabel"><span class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Volume total atendido</div>
+        <div class="kval num" data-count="2289">2.289</div>
+        <div class="ksub">interações tratadas no mês</div>
+        <span class="ktrend up">◆ impacto/alcance total: 1.675.106</span>
+      </div>
+
+      <div class="kpi">
+        <div class="klabel"><span class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10M12 7v5l3 2"/></svg></span>SLA (1h) &amp; 1.ª resposta</div>
+        <div class="sla-dual">
+          <div><div class="tag">Dentro do SLA (1h)</div><div class="big num" style="color:var(--pos)">65,67%</div><div class="abs">Julho 2026</div></div>
+          <div><div class="tag">1.ª resposta média</div><div class="big num" style="font-size:18px">52min07s</div><div class="abs">antes: 1h11min41s</div></div>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="klabel"><span class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 12l4-4 3 3 5-6 6 7"/><path d="M3 20h18"/></svg></span>Resolução N1 vs. Transbordo N2</div>
+        <div class="kval num">98,1%<small> N1</small></div>
+        <div class="ksub">989 atendimentos N1 · <b>1,9% (19)</b> transbordo N2 (18 + 1 mkt)</div>
+        <span class="ktrend up">◆ Relacionamento 1.218 · Reaction 65</span>
+      </div>
+
+      
+    </div>
+
+    <!-- CHART 1 : Daily volume -->
+    <div class="chart-card" style="margin-top:16px">
+      <h3><span style="color:var(--red)">●</span> Evolução diária de volumetria — Julho 2026</h3>
+      <div class="hint">Interações recebidas por dia nos canais administrados, com deteção visual de picos e anomalias.</div>
+      <div class="chart-wrap" style="min-height:280px"><canvas id="chDaily"></canvas></div>
+      <div class="anno">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <span><b>Pico 11–13 Jul (Festival da Comida Continente):</b> 203, 223 e 155 interações/dia — o triplo da média diária (~74). Segunda metade do mês estabiliza abaixo das 60/dia.</span>
+      </div>
+    </div>
+
+    <div class="grid two-col" style="grid-template-columns:1fr 1fr;margin-top:16px">
+      <!-- CHART 2 : Public vs Private -->
+      <div class="chart-card">
+        <h3><span style="color:var(--red)">●</span> Atendimento público vs. privado (por página)</h3>
+        <div class="hint">Divisão das interações entre mural/comentários (Público) e inbox/DM (Privado), por página. Público 1.708 · Privado 1.889.</div>
+        <div class="chart-wrap"><canvas id="chChannel"></canvas></div>
+        <div class="pill-legend">
+          <span class="pl"><span class="sw" style="background:#f6a6ac"></span>Público (mural) — 1.708</span><span class="pl"><span class="sw" style="background:var(--red)"></span>Privado (inbox/DM) — 1.889</span>
+        </div>
+      </div>
+
+      <!-- CHART 3a : Nature -->
+      <div class="chart-card">
+        <h3><span style="color:var(--red)">●</span> Sentimento dos atendimentos (CRM)</h3>
+        <div class="hint">2.289 interações classificadas por sentimento (dados reais).</div>
+        <div class="chart-wrap"><canvas id="chNature"></canvas></div>
+        <div class="pill-legend">
+          <span class="pl"><span class="sw" style="background:var(--pos)"></span>Positivo 80% (1.836)</span><span class="pl"><span class="sw" style="background:var(--neu)"></span>Neutro 13% (288)</span><span class="pl"><span class="sw" style="background:var(--neg)"></span>Negativo 7% (165)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART 3b : Subjects -->
+    <div class="chart-card" style="margin-top:16px">
+      <h3><span style="color:var(--red)">●</span> Principais naturezas (Árvore de Tags)</h3>
+      <div class="hint">Distribuição das interações por natureza em Julho (Árvore de Tags do Buzzmonitor).</div>
+      <div class="chart-wrap" style="min-height:270px"><canvas id="chSubjects"></canvas></div>
+      <div class="pill-legend"><span class="pl">Informativa 897 · Reclamação 818 · Elogio 298 · Solicitação 115 · Sugestão 69 · Problema 23</span></div>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <h3><span style="color:var(--red)">●</span> Principais assuntos (Árvore de Tags)</h3>
+      <div class="hint">Temas de atendimento mais citados em Julho.</div>
+      <div class="chart-wrap" style="min-height:230px"><canvas id="chAssuntos"></canvas></div>
+      <div class="pill-legend"><span class="pl">Serviço de Apoio ao Cliente 891 · Lojas/Horários 291 · Apps 282 · Entregas 168 · Campanhas 91 · Outros 72</span></div>
+    </div>
+  </section>
+
+  <!-- ==================== SEÇÃO 3 — SOCIAL LISTENING ==================== -->
+  <section class="section" id="s3">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow"><span class="n">3</span>Social Listening &amp; Concorrência</div>
+        <h2 style="margin-top:9px">Dados públicos · Continente vs. concorrência direta</h2>
+      </div>
+      <p class="desc">Menções espontâneas (Earned) sobre Continente, Mercadona, Lidl, Pingo Doce e Auchan no mercado português.</p>
+    </div>
+
+    <div class="grid kpi-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="kpi">
+        <div class="klabel"><span class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></span>Volume total de menções (categoria)</div>
+        <div class="kval num" data-count="19473">19.473</div>
+        <div class="ksub">menções — conjunto comparável (Continente + 4 concorrentes) · Portugal</div>
+        <span class="ktrend up">◆ earned · filtro «-lixo» · Julho 2026</span>
+      </div>
+      <div class="kpi">
+        <div class="klabel"><span class="kicon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></span>Share of Voice — Continente</div>
+        <div class="kval num" style="color:var(--red)">35%</div>
+        <div class="ksub">6.800 menções · <b>1.º lugar</b> da categoria comparável (à frente do Pingo Doce, 27%)</div>
+        <span class="ktrend up">◆ Festival da Comida Continente</span>
+      </div>
+    </div>
+
+    <!-- SoV + competitor cards -->
+    <div class="sov-layout" style="margin-top:16px">
+      <div class="chart-card">
+        <h3><span style="color:var(--red)">●</span> Share of Voice comparativo</h3>
+        <div class="hint">Distribuição das menções da categoria entre as 5 marcas.</div>
+        <div class="chart-wrap"><canvas id="chSov"></canvas></div>
+      </div>
+
+      <div class="comp-cards">
+        <div class="comp hl" style="--c:#3b5bdb" data-brand="Continente">
+          <div class="cname">Continente <span class="num" style="font-size:12px;color:var(--muted)">1.º</span></div>
+          <div class="cshare num">35%</div><div class="cabs num">6.800 menções</div>
+          <div class="cwhy"><span class="lab">Porquê</span> Insígnia principal do grupo. Motor de conversa: <b>Festival da Comida Continente</b> (TikTok/IG).</div>
+        </div>
+        <div class="comp" style="--c:#7048E8" data-brand="Pingo Doce">
+          <div class="cname">Pingo Doce <span class="num" style="font-size:12px;color:var(--muted)">2.º</span></div>
+          <div class="cshare num">27%</div><div class="cabs num">5.266 menções</div>
+          <div class="cwhy"><span class="lab">Porquê</span> Supermercados tradicionais. Base fiel muito ativa e forte presença de conteúdo próprio.</div>
+        </div>
+        <div class="comp" style="--c:#1098AD" data-brand="Lidl">
+          <div class="cname">Lidl <span class="num" style="font-size:12px;color:var(--muted)">3.º</span></div>
+          <div class="cshare num">19%</div><div class="cabs num">3.705 menções</div>
+          <div class="cwhy"><span class="lab">Porquê</span> Hard discount. Forte buzz de produto e de notícias (recalls, segurança de gelados) no período.</div>
+        </div>
+        <div class="comp" style="--c:#E64980" data-brand="Mercadona">
+          <div class="cname">Mercadona <span class="num" style="font-size:12px;color:var(--muted)">5.º</span></div>
+          <div class="cshare num">8%</div><div class="cabs num">1.558 menções</div>
+          <div class="cwhy"><span class="lab">Porquê</span> Cadeia de grande consumo em expansão em Portugal; conversa em torno de aberturas e comparações de preço.</div>
+        </div>
+        <div class="comp" style="--c:#868E96" data-brand="Auchan">
+          <div class="cname">Auchan <span class="num" style="font-size:12px;color:var(--muted)">4.º</span></div>
+          <div class="cshare num">11%</div><div class="cabs num">2.144 menções</div>
+          <div class="cwhy"><span class="lab">Porquê</span> Hiper/supermercados. Menor volume espontâneo no período; conversa mais orgânica.</div>
+        </div>
+        <div class="comp" style="--c:#94a3b8;display:grid;place-items:center;text-align:center">
+          <div style="font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.5">
+            <b style="color:var(--ink)">Clique numa marca</b><br>para realçar no gráfico de rosca e ler o contexto que moveu o SoV.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sentiment matrix + peaks -->
+    <div class="grid two-col" style="grid-template-columns:1.15fr .85fr;margin-top:16px">
+      <div class="chart-card">
+        <h3><span style="color:var(--red)">●</span> Matriz de sentimento por marca</h3>
+        <div class="hint">Composição percentual (positivo / neutro / negativo) das menções de cada marca.</div>
+        <div class="chart-wrap" style="min-height:270px"><canvas id="chSentiment"></canvas></div>
+        <div class="pill-legend"><span class="pl"><span class="sw" style="background:var(--pos)"></span>Positivo</span><span class="pl"><span class="sw" style="background:var(--neu)"></span>Neutro</span><span class="pl"><span class="sw" style="background:var(--neg)"></span>Negativo</span></div>
+        
+      </div>
+
+      <div class="chart-card">
+        <h3><span style="color:var(--red)">●</span> Análise de picos — o que moveu a conversa</h3>
+        <div class="hint">O que moveu a conversa de cada marca em Julho e o <b>tema</b> que puxou cada pico. Âmbito: <b>Continente (marca)</b> ou <b>Concorrente</b>.</div>
+        <div class="scope-legend">
+          <span class="sc sc-brand">Continente (marca)</span>
+          <span class="sc sc-comp">Concorrente</span>
+        </div>
+        <div class="timeline" id="peaksTimeline" style="margin-top:14px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SEÇÃO 4 — OWNED vs EARNED ==================== -->
+  <section class="section" id="s4">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow"><span class="n">4</span>Owned Media vs. Earned Media</div>
+        <h2 style="margin-top:9px">Interações próprias vs. conversas espontâneas</h2>
+      </div>
+      <p class="desc">Comparativo entre o que acontece nos canais geridos pelo Continente (Owned) e o que a rede diz de forma espontânea (Earned).</p>
+    </div>
+
+    <div class="grid oe-grid">
+      <div class="oe-card owned">
+        <div class="oe-head">
+          <div class="oe-t">Owned Media<small>Canais próprios administrados via Buzzmonitor</small></div>
+          <div class="oe-v num">2.289<small>interações geridas</small></div>
+        </div>
+        <div class="oe-body">
+          <div class="oe-stat"><span>Direção da conversa</span><b>Reativa / atendimento (CRM)</b></div>
+          <div class="oe-stat"><span>Sentimento dominante</span><b style="color:var(--pos)">Positivo (80,2% dos atendimentos)</b></div>
+          <div class="oe-stat"><span>Principal assunto</span><b>Instagram + Facebook ≈ 91% do volume</b></div>
+          <div class="oe-stat"><span>Tempo médio 1.ª resposta</span><b style="color:var(--pos)">52min07s (dentro do SLA)</b></div>
+          <div class="oe-stat"><span>Controlo da marca</span><b>Alto — resposta direta possível</b></div>
+        </div>
+      </div>
+
+      <div class="oe-card earned">
+        <div class="oe-head">
+          <div class="oe-t">Earned Media<small>Menções espontâneas captadas por Social Listening</small></div>
+          <div class="oe-v num">6.299<small>menções da marca</small></div>
+        </div>
+        <div class="oe-body">
+          <div class="oe-stat"><span>Direção da conversa</span><b>Espontânea / opinião pública</b></div>
+          <div class="oe-stat"><span>Sentimento dominante</span><b style="color:var(--pos)">Positivo — 59% das menções (3.716)</b></div>
+          <div class="oe-stat"><span>Principal driver</span><b>Festival da Comida Continente &amp; UGC</b></div>
+          <div class="oe-stat"><span>Alcance estimado</span><b>earned comparável · Portugal</b></div>
+          <div class="oe-stat"><span>Controlo da marca</span><b>Indireto — influência via conteúdo</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verbatims -->
+    <h3 style="margin-top:24px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px">
+      <span style="color:var(--red)">●</span> Verbatins representativos — rastreáveis por origem e taxonomia
+      <span style="font-size:12px;font-weight:600;color:var(--muted);margin-left:auto">Clique num card para ver o detalhe completo</span>
+    </h3>
+    <div class="grid verb-grid" id="verbGrid" style="margin-top:14px"></div>
+  </section>
+
+  <!-- ==================== SEÇÃO 5 — TOP POSTS ==================== -->
+  <section class="section" id="s5">
+    <div class="sec-head">
+      <div>
+        <div class="sec-eyebrow"><span class="n">5</span>Top Posts de Julho</div>
+        <h2 style="margin-top:9px">Melhores conteúdos por rede social</h2>
+      </div>
+      <p class="desc">Publicações com maior desempenho de engagement e alcance nos canais próprios do Continente.</p>
+    </div>
+    <div class="grid post-grid" id="postGrid"></div>
+  </section>
+
+</main>
+
+<!-- footer -->
+<footer class="foot">
+  <span class="fb">Continente</span>
+  <span>Relatório operado pela <b>Elife Portugal</b> · coleta e operação via <b>Buzzmonitor</b> · Julho 2026</span>
+  <div class="stack">
+    <span>SLA ≤ 4h</span><span>N1 · N2 transbordo</span><span>Owned + Earned</span><span>Dados representativos de demonstração</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="modal-head" id="mHead">
+      <div class="mnet" id="mNet"></div>
+      <div class="mt" id="mTitle">—<small id="mSub">—</small></div>
+      <button class="mclose" id="mClose" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-quote" id="mQuote">—</div>
+      <div class="modal-meta">
+        <div class="mm"><div class="l">Natureza</div><div class="v" id="mNature">—</div></div>
+        <div class="mm"><div class="l">Assunto (Árvore de Tags)</div><div class="v" id="mSubject">—</div></div>
+        <div class="mm"><div class="l">Origem</div><div class="v" id="mOrigin">—</div></div>
+        <div class="mm"><div class="l">Sentimento</div><div class="v" id="mSent">—</div></div>
+      </div>
+      <a class="modal-cta" id="mLink" href="#" onclick="return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg>
+        Ver publicação original (simulado)
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="chip"></span><span id="toastMsg">Filtros aplicados</span></div>
+
+<script>
+const REAL={"meta": {"updated": "26 Ago 2026, 14h10 (PT)"}, "crm": {"total": 2289, "slaPct": "65,67%", "firstResp": "52min07s", "firstRespPrev": "1h11min41s", "sent": {"pos": 1836, "neu": 288, "neg": 165}, "categoria": [["Relacionamento", 1218], ["Atendimento N1", 989], ["Reaction", 65], ["Atendimento N2", 16], ["Atend. Humano", 1]], "naturezas": [["Informativa", 897], ["Reclamação", 818], ["Elogio", 298], ["Solicitação", 115], ["Sugestão", 69], ["Problema", 23]], "assuntos": [["Serviço de Apoio ao Cliente", 891], ["Lojas / Horários", 291], ["Aplicações / App", 282], ["Entregas / Encomendas", 168], ["Campanhas", 91], ["Outros", 72]], "pubpriv": {"pages": ["Continente", "Continente Online", "Plug & Charge", "Negócios", "Feed"], "publico": [877, 368, 183, 142, 138], "privado": [597, 478, 318, 289, 207]}, "daily": [110, 63, 102, 70, 60, 87, 76, 74, 87, 66, 203, 223, 155, 52, 83, 76, 62, 41, 19, 26, 35, 46, 45, 48, 46, 60, 57, 91, 47, 48, 31], "days": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]}, "sov": [["Continente", 6800], ["Pingo Doce", 5266], ["Lidl", 3705], ["Auchan", 2144], ["Mercadona", 1558]], "sovPct": {"Continente": "35%", "Pingo Doce": "27%", "Lidl": "19%", "Auchan": "11%", "Mercadona": "8%"}, "sovTotal": 19473, "sentMatrix": [["Continente", 33, 52, 15], ["Pingo Doce", 35, 50, 15], ["Lidl", 32, 51, 17], ["Auchan", 38, 48, 14], ["Mercadona", 37, 49, 14]], "contEarned": {"total": 6299, "byNet": [["Facebook", 5191], ["Notícias", 735], ["Instagram", 298]], "sent": {"pos": 3716, "neu": 1701, "neg": 882}}, "verb": [{"brand": "Continente", "net": "Instagram", "sent": "pos", "nature": "Opinião", "subject": "Promoções & Campanhas", "origin": "Earned Media", "text": "Todos os brindes que eu trouxe do festival do continente 🎁 #festivalcontinente #festivalcomidacontinente #continente #brindes #foryou", "link": "https://www.instagram.com/reel/DaqXPjYMIxc/", "date": "11 Jul 2026"}, {"brand": "Pingo Doce", "net": "Facebook", "sent": "pos", "nature": "Opinião", "subject": "Comparação c/ Concorrência", "origin": "Earned Media", "text": "Estou a adorar esta novela Pingo Doce. 😄❤️", "link": "", "date": "26 Jul 2026"}, {"brand": "Pingo Doce", "net": "Facebook", "sent": "neg", "nature": "Notícias", "subject": "Lojas Físicas & Segurança", "origin": "Earned Media", "text": "Acidente nas escadas do Pingo Doce do Calhabé destaca riscos do estacionamento desorganizado de trotinetas e bicicletas partilhadas sem doca em espaços públicos", "link": "https://www.facebook.com/620489003437817/posts/1472392671580775", "date": "28 Jul 2026"}, {"brand": "Lidl", "net": "Facebook", "sent": "pos", "nature": "Engagement", "subject": "Produtos & Qualidade", "origin": "Earned Media", "text": "Costela nacional do Lidl grelhada e 1 delícia 👍", "link": "", "date": "04 Jul 2026"}, {"brand": "Lidl", "net": "Facebook", "sent": "neg", "nature": "Notícias", "subject": "Produtos & Qualidade", "origin": "Earned Media", "text": "Lidl lança alerta urgente sobre gelado e assegura reembolso \"mesmo sem talão de compra\"", "link": "https://www.facebook.com/634790595354201/posts/1636018765231374", "date": "14 Jul 2026"}, {"brand": "Mercadona", "net": "X/Twitter", "sent": "pos", "nature": "Opinião", "subject": "Comparação c/ Concorrência", "origin": "Earned Media", "text": "Mercadona verdadeiro G.O.A.T, com Lidl em segundo IMO https://t.co/u7L5m1f3Fb", "link": "", "date": "14 Jul 2026"}, {"brand": "Mercadona", "net": "Facebook", "sent": "neu", "nature": "Notícias", "subject": "Produtos & Qualidade", "origin": "Earned Media", "text": "Mercadona tem solução para um dos maiores incómodos do verão por apenas 4 euros", "link": "https://www.facebook.com/787288502796057/posts/1561363922055174", "date": "05 Jul 2026"}, {"brand": "Continente", "net": "Facebook", "sent": "neg", "nature": "Atendimento", "subject": "Atendimento CRM (Owned)", "origin": "Owned Media", "text": "No I am trying with a Spanish number or a UK number. The UK number worked previously", "link": "https://facebook.com/259211337438", "date": "31 Jul 2026"}, {"brand": "Continente", "net": "TikTok", "sent": "pos", "nature": "Atendimento", "subject": "Atendimento CRM (Owned)", "origin": "Owned Media", "text": "tropical é muito bom meu preferido", "link": "https://www.tiktok.com/@/video/7665305550560840993?cid=NzY2ODgyNzEwMzI4MzM5NzM5OA==", "date": "31 Jul 2026"}], "posts": [{"net": "TikTok", "text": "O primeiro dia do Festival da Comida Continente não desiludiu com o @Mc Livinho 🔥 E a festa ainda não acabou! Amanhã há muito mais para viver. Até já!", "likes": 10244, "shares": 962, "reach": 748290, "eng": 135.2, "link": "https://www.tiktok.com/@continente/video/7661408171507895584?utm_campaign=tt4d_open_api&utm_source=7104140465720524801", "date": "11 Jul 2026"}, {"net": "Instagram", "text": "Há músicas que mal começam... já toda a gente está a cantar. ❤️🎤 Com o @anselmoralph não foi diferente. 😎 #Continente #FestivalDaComidaContinente", "likes": 21360, "shares": 555, "reach": 174445, "eng": 31.5, "link": "https://www.instagram.com/reel/DatRBYgszAF/", "date": "12 Jul 2026"}, {"net": "Facebook", "text": "O Festival da Comida Continente ficou no coração! Dois dias cheios de boas garfadas, música ao vivo e momentos que só acontecem aqui. 🎶🍽️ Obrigado por", "likes": 10252, "shares": 589, "reach": 701470, "eng": 5.2, "link": "https://www.facebook.com/reel/2096601851270936/", "date": "12 Jul 2026"}, {"net": "TikTok", "text": "O Festival da Comida Continente reuniu os melhores sabores, os melhores artistas e as melhores pessoas. Foi bom demais para esquecer e não voltar a ve", "likes": 8953, "shares": 249, "reach": 522868, "eng": 112.0, "link": "https://www.tiktok.com/@continente/video/7662796745763556641?utm_campaign=tt4d_open_api&utm_source=7104140465720524801", "date": "15 Jul 2026"}, {"net": "TikTok", "text": "Se a fruta forem estas laranjas geladas, contem comigo. 🤝🍊 #Continente #fyp​", "likes": 5757, "shares": 1672, "reach": 693590, "eng": 89.0, "link": "https://www.tiktok.com/@continente/video/7667908339048664352?utm_campaign=tt4d_open_api&utm_source=7104140465720524801", "date": "29 Jul 2026"}, {"net": "TikTok", "text": "Quando o telemóvel passa de mão em mão, já se sabe… o resultado só pode ser um! 😎 #Continente #FestivalDaComidaContinente #fyp", "likes": 5652, "shares": 496, "reach": 798928, "eng": 75.7, "link": "https://www.tiktok.com/@continente/video/7661377516149443872?utm_campaign=tt4d_open_api&utm_source=7104140465720524801", "date": "11 Jul 2026"}], "peaks": [{"brand": "Continente", "scope": "brand", "day": "10–13", "value": 120, "sent": "pos", "note": "Festival da Comida Continente (8.ª edição), com MC Livinho, Anselmo Ralph e Sara Correia — conversa maioritariamente positiva ao longo dos dias do evento."}, {"brand": "Continente", "scope": "brand", "day": "7", "value": 85, "sent": "neu", "note": "Conversa de loja e produto — leitores de preço, talão de compras e promoções; foco em preços e qualidade."}, {"brand": "Lidl", "scope": "comp", "day": "3", "value": 538, "sent": "pos", "note": "Campanha de grelhados/churrasco (\"o primeiro prato na grelha\"); os comentários genéricos referem-se a este passatempo de grelhados."}, {"brand": "Pingo Doce", "scope": "comp", "day": "27", "value": 505, "sent": "pos", "note": "Storytelling de marca — a \"novela\" com Pipinha/João; os \"parabéns\" e felicitações aos \"noivos\" referem-se a este episódio."}, {"brand": "Mercadona", "scope": "comp", "day": "27", "value": 101, "sent": "neu", "note": "Conversa dispersa sobre produtos e comparações de insígnia (ex.: hidratante de pêssego, comparação com Aldi/Lidl); sentimento misto."}, {"brand": "Auchan", "scope": "comp", "day": "22", "value": 52, "sent": "neu", "note": "Debate em torno de conteúdo de marca (tema de animais de estimação) e vales de loja; sentimento misto."}]};
+/* ===== ÍCONES DE REDE ===== */
+const NET={
+ Instagram:{color:'#E1306C',svg:'<svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.37 1.06.42 2.23.06 1.27.07 1.65.07 4.86s0 3.6-.07 4.86c-.05 1.17-.25 1.8-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.06.37-2.23.42-1.27.06-1.65.07-4.86.07s-3.6 0-4.86-.07c-1.17-.05-1.8-.25-2.23-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.42-.37-1.06-.42-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.86c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.06-.37 2.23-.42C8.4 2.2 8.8 2.2 12 2.2m0 5.4a4.4 4.4 0 1 0 0 8.8 4.4 4.4 0 0 0 0-8.8m5.6-.9a1.03 1.03 0 1 0 0 2.06 1.03 1.03 0 0 0 0-2.06M12 9.8a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4"/></svg>'},
+ Facebook:{color:'#1877F2',svg:'<svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.9 3.78-3.9 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12"/></svg>'},
+ TikTok:{color:'#010101',svg:'<svg viewBox="0 0 24 24"><path d="M16.5 2h-3v13.2a2.6 2.6 0 1 1-2.2-2.57V9.6a5.7 5.7 0 1 0 5.2 5.68V8.7a6.9 6.9 0 0 0 4 1.28V6.9a3.9 3.9 0 0 1-4-3.9z"/></svg>'},
+ YouTube:{color:'#FF0000',svg:'<svg viewBox="0 0 24 24"><path d="M23 12s0-3.3-.42-4.9a2.56 2.56 0 0 0-1.8-1.8C19.16 5 12 5 12 5s-7.16 0-8.78.3a2.56 2.56 0 0 0-1.8 1.8C1 8.7 1 12 1 12s0 3.3.42 4.9c.24.87.94 1.56 1.8 1.8C4.84 19 12 19 12 19s7.16 0 8.78-.3a2.56 2.56 0 0 0 1.8-1.8C23 15.3 23 12 23 12zM9.8 15.3V8.7l5.7 3.3z"/></svg>'},
+ 'X/Twitter':{color:'#111111',svg:'<svg viewBox="0 0 24 24"><path d="M17.5 3h3l-6.6 7.5L21.7 21h-6l-4.7-6.1L5.6 21H2.5l7-8L2.6 3h6.1l4.2 5.6zM16.4 19.2h1.7L7.7 4.7H5.9z"/></svg>'},
+ 'Notícias':{color:'#475569',svg:'<svg viewBox="0 0 24 24"><path d="M4 4h16v16a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2zm3 4v3h6V8zm8 0v2h2V8zM7 13v2h10v-2zm0 4v2h10v-2z"/></svg>'}
+};
+function netIcon(n){const x=NET[n];return x?{color:x.color,svg:x.svg}:{color:'#64748b',svg:NET['Notícias'].svg};}
+const SL={pos:'Positivo',neu:'Neutro',neg:'Negativo'},SC={pos:'s-pos',neu:'s-neu',neg:'s-neg'};
+const nf=n=>Number(n).toLocaleString('pt-PT');
+
+/* ===== VERBATINS ===== */
+function renderVerbatims(list){
+  const g=document.getElementById('verbGrid');g.innerHTML='';
+  if(!list.length){g.innerHTML='<div class="card pad" style="grid-column:1/-1;text-align:center;color:var(--muted);font-weight:600">Nenhum verbatim corresponde aos filtros selecionados.</div>';return;}
+  list.forEach(v=>{
+    const ic=netIcon(v.net);
+    const el=document.createElement('div');el.className='verbatim';el.tabIndex=0;
+    el.innerHTML=`<div class="vb-top"><div class="vb-net" style="background:${ic.color}">${ic.svg}</div>
+      <div class="vb-brand">${v.brand}<small>${v.net} · ${v.origin}</small></div>
+      <span class="vb-sent ${SC[v.sent]}">${SL[v.sent]}</span></div>
+      <div class="vb-text">${v.text}”</div>
+      <div class="vb-tags"><span class="vb-tag">${v.nature}</span><span class="vb-tag">${v.subject}</span><span class="vb-tag origin">${v.origin}</span></div>
+      <div class="vb-foot"><span class="date">${v.date}</span>
+        ${v.link?`<a class="vb-link" href="${v.link}" target="_blank" rel="noopener">Ver publicação <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg></a>`:`<span class="date" style="opacity:.6">sem link direto</span>`}
+      </div>`;
+    el.addEventListener('click',()=>openModal(v));
+    el.addEventListener('keypress',e=>{if(e.key==='Enter')openModal(v);});
+    g.appendChild(el);
+  });
+}
+function openModal(v){
+  const ic=netIcon(v.net);
+  document.getElementById('mNet').innerHTML=ic.svg;
+  document.getElementById('mHead').style.background=ic.color;
+  document.getElementById('mTitle').childNodes[0].nodeValue=v.brand+' ';
+  document.getElementById('mSub').textContent=v.net+' · '+v.origin+' · '+v.date;
+  document.getElementById('mQuote').textContent='“'+v.text+'”';
+  document.getElementById('mNature').textContent=v.nature;
+  document.getElementById('mSubject').textContent=v.subject;
+  document.getElementById('mOrigin').textContent=v.origin;
+  document.getElementById('mSent').innerHTML=`<span class="vb-sent ${SC[v.sent]}" style="display:inline-block">${SL[v.sent]}</span>`;
+  const lk=document.getElementById('mLink');
+  if(v.link){lk.href=v.link;lk.style.display='';lk.onclick=null;} else {lk.style.display='none';}
+  document.getElementById('modalBg').classList.add('open');
+}
+document.getElementById('mClose').onclick=()=>document.getElementById('modalBg').classList.remove('open');
+document.getElementById('modalBg').addEventListener('click',e=>{if(e.target.id==='modalBg')document.getElementById('modalBg').classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modalBg').classList.remove('open');});
+
+/* ===== TOP POSTS ===== */
+const POSTBG={TikTok:'linear-gradient(135deg,#212529,#495057)',Instagram:'linear-gradient(135deg,#E1306C,#ff9a6b)',Facebook:'linear-gradient(135deg,#1877F2,#5b9bff)',YouTube:'linear-gradient(135deg,#FF0000,#ff6a6a)'};
+const POSTEMO={TikTok:'🎵',Instagram:'📸',Facebook:'👍',YouTube:'▶️'};
+function renderPosts(){
+  const g=document.getElementById('postGrid');g.innerHTML='';
+  REAL.posts.forEach(p=>{
+    const ic=netIcon(p.net);
+    const metrics=[['❤ Likes',nf(p.likes||0)],['↗ Partilhas',nf(p.shares||0)],['👁 Alcance',nf(p.reach||0)]];
+    const el=document.createElement('div');el.className='post';
+    el.innerHTML=`<div class="post-thumb" style="background:${POSTBG[p.net]||'linear-gradient(135deg,#C8102E,#E30613)'}">
+        <span class="emoji">${POSTEMO[p.net]||'🛒'}</span>
+        <div class="post-net" style="background:${ic.color}">${ic.svg}</div>
+        <div class="post-date">${p.date}</div></div>
+      <div class="post-body">
+        <p style="flex:1">“${p.text}”</p>
+        <div class="post-metrics">${metrics.map(m=>`<div class="pm"><div class="pmv num">${m[1]}</div><div class="pml">${m[0]}</div></div>`).join('')}</div>
+        ${p.link?`<a class="see" href="${p.link}" target="_blank" rel="noopener">Ver publicação ↗</a>`:`<span class="see" style="background:#adb5bd">Sem link</span>`}
+      </div>`;
+    g.appendChild(el);
+  });
+}
+
+/* ===== ANÁLISE DE PICOS — âmbito Marca (Continente) / Concorrente ===== */
+function renderPeaks(comp){
+  const w=document.getElementById('peaksTimeline');w.innerHTML='';
+  let list=REAL.peaks.filter(p=> comp==='todos'?true:(p.brand===comp)).slice().sort((a,b)=>b.value-a.value);
+  if(!list.length){w.innerHTML='<div class="pending">Sem picos de conversa para esta seleção em Julho.</div>';return;}
+  list.forEach(p=>{
+    const sc=p.scope==='brand'?'sc-brand':'sc-comp';
+    const el=document.createElement('div');el.className='tl-item'+(p.sent==='pos'?' pos':(p.sent==='neg'?' neg':''));
+    el.innerHTML=`<span class="dot"></span>
+      <div class="tl-head"><span class="tl-date">${p.day} JUL</span><span class="sc ${sc}">${p.brand}</span><span class="vb-sent ${SC[p.sent]}" style="margin-left:auto">${SL[p.sent]}</span></div>
+      <div class="tl-title">Pico de conversa — ${p.brand}</div>
+      <div class="tl-body"><b>${nf(p.value)} menções</b> · ${p.note}</div>`;
+    w.appendChild(el);
+  });
+}
+
+/* ===== CHART.JS ===== */
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";Chart.defaults.font.size=12;Chart.defaults.color='#6b7280';
+const RED='#E30613',POS='#16a34a',NEU='#f59e0b',NEG='#dc2626';
+const CAT=['#3b5bdb','#4C6EF5','#5c7cfa','#748ffc','#91a7ff','#bac8ff'];
+const brandColors={Continente:'#3b5bdb','Pingo Doce':'#7048E8',Lidl:'#1098AD',Mercadona:'#E64980',Auchan:'#868E96'};
+const tt={backgroundColor:'#161a22',titleColor:'#fff',bodyColor:'#e5e7eb',padding:12,cornerRadius:10,titleFont:{weight:'700',size:13},bodyFont:{size:12.5},boxPadding:4};
+let charts={},sovChart;
+
+/* CRM — evolução diária (real) */
+function chartDaily(){
+  const d=REAL.crm.daily,days=REAL.crm.days,mx=Math.max(...d);
+  charts.daily=new Chart(document.getElementById('chDaily'),{type:'line',
+    data:{labels:days,datasets:[{data:d,borderColor:'#4C6EF5',borderWidth:2.5,tension:.34,fill:true,
+      pointRadius:d.map(v=>v===mx?6:2.2),pointBackgroundColor:d.map(v=>v===mx?'#7048E8':'#4C6EF5'),pointBorderColor:'#fff',pointBorderWidth:2,
+      backgroundColor:c=>{const{ctx,chartArea}=c.chart;if(!chartArea)return'rgba(76,110,245,.08)';const g=ctx.createLinearGradient(0,chartArea.top,0,chartArea.bottom);g.addColorStop(0,'rgba(76,110,245,.22)');g.addColorStop(1,'rgba(76,110,245,0)');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:900},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{title:i=>'Dia '+i[0].label+' Jul',label:c=>nf(c.parsed.y)+' interações'}}},
+      scales:{x:{grid:{display:false},ticks:{maxRotation:0,autoSkipPadding:10}},y:{grid:{color:'#eef0f3'},beginAtZero:true}}}});
+}
+/* CRM — público vs privado por página (real) */
+function chartChannel(){
+  const pp=REAL.crm.pubpriv;
+  charts.pp=new Chart(document.getElementById('chChannel'),{type:'bar',
+    data:{labels:pp.pages,datasets:[
+      {label:'Público',data:pp.publico,backgroundColor:'#9775fa',borderRadius:6},
+      {label:'Privado',data:pp.privado,backgroundColor:'#4C6EF5',borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:800},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>c.dataset.label+': '+nf(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{font:{weight:'600'}}},y:{grid:{color:'#eef0f3'},beginAtZero:true}}}});
+}
+/* CRM — sentimento (real) */
+function chartNature(){
+  const s=REAL.crm.sent,tot=s.pos+s.neu+s.neg;
+  charts.sent=new Chart(document.getElementById('chNature'),{type:'doughnut',
+    data:{labels:['Positivo','Neutro','Negativo'],datasets:[{data:[s.pos,s.neu,s.neg],backgroundColor:[POS,NEU,NEG],borderColor:'#fff',borderWidth:3,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',animation:{animateRotate:true,duration:800},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>c.label+': '+(c.parsed/tot*100).toFixed(0)+'% ('+nf(c.parsed)+')'}}}}});
+}
+/* CRM — principais naturezas (real) */
+function chartSubjects(){
+  const d=REAL.crm.naturezas,tot=d.reduce((a,b)=>a+b[1],0);
+  charts.nat=new Chart(document.getElementById('chSubjects'),{type:'bar',
+    data:{labels:d.map(x=>x[0]),datasets:[{data:d.map(x=>x[1]),backgroundColor:CAT,borderRadius:7,barThickness:20}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:800},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>nf(c.parsed.x)+' ('+(c.parsed.x/tot*100).toFixed(1)+'%)'}}},
+      scales:{x:{grid:{color:'#eef0f3'},beginAtZero:true},y:{grid:{display:false},ticks:{font:{weight:'600'}}}}}});
+}
+/* CRM — principais assuntos (real) */
+function chartAssuntos(){
+  const d=REAL.crm.assuntos,tot=d.reduce((a,b)=>a+b[1],0);
+  charts.ass=new Chart(document.getElementById('chAssuntos'),{type:'bar',
+    data:{labels:d.map(x=>x[0]),datasets:[{data:d.map(x=>x[1]),backgroundColor:CAT,borderRadius:7,barThickness:20}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:800},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>nf(c.parsed.x)+' ('+(c.parsed.x/tot*100).toFixed(1)+'%)'}}},
+      scales:{x:{grid:{color:'#eef0f3'},beginAtZero:true},y:{grid:{display:false},ticks:{font:{weight:'600'}}}}}});
+}
+/* Listening — SoV (real) */
+function chartSov(){
+  const d=REAL.sov,tot=REAL.sovTotal;
+  sovChart=new Chart(document.getElementById('chSov'),{type:'doughnut',
+    data:{labels:d.map(x=>x[0]),datasets:[{data:d.map(x=>x[1]),backgroundColor:d.map(x=>brandColors[x[0]]),borderColor:'#fff',borderWidth:3,hoverOffset:10,offset:d.map(x=>x[0]==='Continente'?12:0)}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',animation:{animateRotate:true,duration:900},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>c.label+': '+(c.parsed/tot*100).toFixed(1)+'% ('+nf(c.parsed)+')'}}}}});
+  charts.sov=sovChart;
+}
+/* Listening — matriz de sentimento por marca (real) */
+function chartSentiment(){
+  const m=REAL.sentMatrix;
+  charts.sm=new Chart(document.getElementById('chSentiment'),{type:'bar',
+    data:{labels:m.map(x=>x[0]),datasets:[
+      {label:'Positivo',data:m.map(x=>x[1]),backgroundColor:POS,stack:'s',borderRadius:{bottomLeft:6,bottomRight:6}},
+      {label:'Neutro',data:m.map(x=>x[2]),backgroundColor:NEU,stack:'s'},
+      {label:'Negativo',data:m.map(x=>x[3]),backgroundColor:NEG,stack:'s',borderRadius:{topLeft:6,topRight:6}}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:800},
+      plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}},
+      scales:{x:{grid:{display:false},stacked:true,ticks:{font:{weight:'600'}}},y:{stacked:true,max:100,grid:{color:'#eef0f3'},ticks:{callback:v=>v+'%'}}}}});
+}
+function bindCompCards(){
+  document.querySelectorAll('.comp[data-brand]').forEach(card=>{
+    card.style.cursor='pointer';
+    card.addEventListener('click',()=>{
+      document.querySelectorAll('.comp').forEach(c=>c.classList.remove('hl'));card.classList.add('hl');
+      const b=card.dataset.brand,i=sovChart.data.labels.indexOf(b);
+      sovChart.data.datasets[0].offset=sovChart.data.labels.map((l,x)=>x===i?18:0);sovChart.update();
+      showToast('Realçado: '+b);
+    });
+  });
+}
+
+/* ===== FILTROS ===== */
+function applyFilters(){
+  const ch=document.getElementById('fChannel').value,nat=document.getElementById('fNature').value,comp=document.getElementById('fComp').value;
+  let list=REAL.verb.slice();
+  if(ch!=='todos')list=list.filter(v=>v.net===ch);
+  if(nat!=='todos')list=list.filter(v=>v.nature===nat);
+  if(comp!=='todos')list=list.filter(v=>v.brand===comp);
+  renderVerbatims(list);renderPeaks(comp);
+  if(comp!=='todos'&&brandColors[comp]){
+    document.querySelectorAll('.comp').forEach(c=>c.classList.toggle('hl',c.dataset.brand===comp));
+    if(sovChart){const i=sovChart.data.labels.indexOf(comp);sovChart.data.datasets[0].offset=sovChart.data.labels.map((l,x)=>x===i?18:0);sovChart.update();}
+  }
+  const parts=[];if(ch!=='todos')parts.push(ch);if(nat!=='todos')parts.push(nat);if(comp!=='todos')parts.push(comp);
+  showToast(parts.length?('Filtros: '+parts.join(' · ')+' — '+list.length+' verbatim(s)'):'Vista completa');
+}
+['fChannel','fNature','fComp'].forEach(id=>document.getElementById(id).addEventListener('change',applyFilters));
+document.getElementById('btnReset').addEventListener('click',()=>{
+  ['fChannel','fNature','fComp'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  document.querySelectorAll('.comp').forEach(c=>c.classList.remove('hl'));
+  const cc=document.querySelector('.comp[data-brand="Continente"]');if(cc)cc.classList.add('hl');
+  if(sovChart){sovChart.data.datasets[0].offset=sovChart.data.labels.map(l=>l==='Continente'?12:0);sovChart.update();}
+  renderVerbatims(REAL.verb);renderPeaks('todos');showToast('Vista completa');
+});
+let tT;function showToast(m){document.getElementById('toastMsg').textContent=m;const t=document.getElementById('toast');t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2600);}
+function countUp(){document.querySelectorAll('[data-count]').forEach(el=>{const t=+el.dataset.count;let c=0,s=t/48;const f=n=>Math.round(n).toLocaleString('pt-PT');(function tick(){c+=s;if(c<t){el.textContent=f(c);requestAnimationFrame(tick);}else el.textContent=f(t);})();});}
+
+let _inited=false;
+function initDashboard(){
+  if(_inited)return;_inited=true;
+  renderVerbatims(REAL.verb);renderPosts();renderPeaks('todos');
+  chartDaily();chartChannel();chartNature();chartSubjects();chartAssuntos();chartSov();chartSentiment();bindCompCards();countUp();
+}
+const PWD='@MensalMC2026';
+function tryUnlock(){
+  const v=document.getElementById('pwInput').value;
+  if(v===PWD){document.getElementById('lockScreen').style.display='none';document.body.style.overflow='';initDashboard();}
+  else{const e=document.getElementById('pwErr');e.style.display='block';document.getElementById('pwInput').value='';}
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  document.body.style.overflow='hidden';
+  document.getElementById('pwBtn').addEventListener('click',tryUnlock);
+  document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock();});
+  document.getElementById('pwInput').focus();
+});
+
+</script>
+</body>
+</html>
